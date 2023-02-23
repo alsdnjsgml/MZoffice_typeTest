@@ -2,12 +2,18 @@ const main = document.querySelector("#main");
 const qna = document.querySelector("#qna");
 const result = document.querySelector("#result");
 
-const endPoint = 12;
-const select = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+const endPoint = 11;
+const select = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
+// 점수 계산
 function calResult(){
-  console.log(select);
-  var result = select.indexOf(Math.max(...select));
+  var result = 0;
+  for (let i = 0; i < select.length; i++) {
+    result += select[i]; 
+  }
+  
+  console.log("최종 답안 : " + select);
+  console.log("총 합 : " + result);
   return result;
 }
 
@@ -41,7 +47,52 @@ function goResult(){
     setResult();
 }
 
-function addAnswer(answerText, qIdx, idx){
+function addLinearScales(qIdx,number) {
+  var a = document.querySelector('.answerBox');
+  var ls = document.createElement('button');
+  ls.classList.add('linearScalesList');
+  ls.classList.add('my-3');
+  ls.classList.add('py-3');
+  ls.classList.add('mx-auto');
+  ls.classList.add('fadeIn');
+
+  a.appendChild(ls);
+  ls.innerHTML = number;
+
+  // 답안 선택시 이벤트
+  ls.addEventListener("click", function(){
+    var children = document.querySelectorAll('.linearScalesList');
+    var answer = document.querySelectorAll('.answerList');
+    
+    // 모든 선택지 초기화후 사라짐
+    for(let i = 0; i < children.length; i++){
+      children[i].disabled = true;
+      children[i].style.WebkitAnimation = "fadeOut 0.5s";
+      children[i].style.animation = "fadeOut 0.5s";
+    }
+    for (let i = 0; i < answer.length; i++) {
+      answer[i].style.WebkitAnimation = "fadeOut 0.5s";
+      answer[i].style.animation = "fadeOut 0.5s";      
+    }
+    
+    setTimeout(() => {
+      // 선택 저장
+      select[qIdx] = number
+      // console.log(select)
+
+      // 숨기기
+      for(let i = 0; i < children.length; i++){
+        children[i].style.display = 'none';
+      }
+      for(let i = 0; i < answer.length; i++){
+        answer[i].style.display = 'none';
+      }
+      goNext(++qIdx);
+    },450)
+  }, false);
+}
+
+function addAnswer(answerText, qIdx){
   var a = document.querySelector('.answerBox');
   var answer = document.createElement('button');
   answer.classList.add('answerList');
@@ -52,26 +103,6 @@ function addAnswer(answerText, qIdx, idx){
 
   a.appendChild(answer);
   answer.innerHTML = answerText;
-
-  answer.addEventListener("click", function(){
-    var children = document.querySelectorAll('.answerList');
-    for(let i = 0; i < children.length; i++){
-      children[i].disabled = true;
-      children[i].style.WebkitAnimation = "fadeOut 0.5s";
-      children[i].style.animation = "fadeOut 0.5s";
-    }
-    setTimeout(() => {
-      var target = qnaList[qIdx].a[idx].type;
-      for(let i = 0; i < target.length; i++){
-        select[target[i]] += 1;
-      }
-
-      for(let i = 0; i < children.length; i++){
-        children[i].style.display = 'none';
-      }
-      goNext(++qIdx);
-    },450)
-  }, false);
 }
 
 function goNext(qIdx){
@@ -80,11 +111,16 @@ function goNext(qIdx){
     return;
   }
 
+  // 질문 만들기
   var q = document.querySelector('.qBox');
   q.innerHTML = qnaList[qIdx].q;
-  for(let i in qnaList[qIdx].a){
-    addAnswer(qnaList[qIdx].a[i].answer, qIdx, i);
+  addAnswer(qnaList[qIdx].a[0].answer, qIdx);
+  for (let i = 1; i < 6; i++) {
+    addLinearScales(qIdx,i);
   }
+  addAnswer(qnaList[qIdx].a[1].answer, qIdx);
+  
+  // 질문 상태 바 업데이트
   var status = document.querySelector('.statusBar');
   status.style.width = (100/endPoint) * (qIdx+1) + '%';
 }
