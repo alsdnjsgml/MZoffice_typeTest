@@ -42,6 +42,14 @@ function goResult(){
 }
 
 function addAnswer(answerText, qIdx, idx){
+  var questionImg = document.createElement('img');
+  const QimgDiv = document.querySelector('#questionImg');
+  var QimgURL = 'img/question_img-' + qIdx + '.png';
+  questionImg.src = QimgURL;
+  questionImg.alt = qIdx;
+  questionImg.classList.add('img-fluid');
+  QimgDiv.appendChild(questionImg);
+
   var a = document.querySelector('.answerBox');
   var answer = document.createElement('button');
   answer.classList.add('answerList');
