@@ -48,6 +48,7 @@ function addAnswer(answerText, qIdx, idx){
   questionImg.src = QimgURL;
   questionImg.alt = qIdx;
   questionImg.classList.add('img-fluid');
+  questionImg.classList.add('fadeIn');
   QimgDiv.appendChild(questionImg);
 
   var a = document.querySelector('.answerBox');
@@ -62,6 +63,8 @@ function addAnswer(answerText, qIdx, idx){
   answer.innerHTML = answerText;
 
   answer.addEventListener("click", function(){
+    /*QimgDiv.style.display = 'none';*/
+
     var children = document.querySelectorAll('.answerList');
     for(let i = 0; i < children.length; i++){
       children[i].disabled = true;
@@ -87,6 +90,7 @@ function goNext(qIdx){
     goResult();
     return;
   }
+
 
   var q = document.querySelector('.qBox');
   q.innerHTML = qnaList[qIdx].q;
