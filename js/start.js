@@ -2,7 +2,7 @@ const main = document.querySelector("#main");
 const qna = document.querySelector("#qna");
 const result = document.querySelector("#result");
 
-const endPoint = 12;
+const endPoint = 20;
 const select = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 function calResult(){

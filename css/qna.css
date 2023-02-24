@@ -26,8 +26,8 @@
   }
   
   .status {
-    height: 20px;
-    width: 80%;
+    height: 10px;
+    width: 100%;
     background-color: white;
     border-radius: 20px;
   }
@@ -46,4 +46,5 @@
     /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#febbbb', endColorstr='#ff5c5c', GradientType=0);
     /* IE6-9 */
+    
   }
